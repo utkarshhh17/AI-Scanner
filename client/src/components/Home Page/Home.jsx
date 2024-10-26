@@ -7,6 +7,8 @@ import Nav from "../Nav/Nav";
 
 export default function Home(){
 
+    
+
     return(
         <div className="flex w-screen h-screen flex-col overflow-x-hidden bg-repeat" style={{ backgroundImage: `url('/clouds.png')` }}>
 

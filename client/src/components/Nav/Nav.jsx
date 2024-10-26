@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useNavigate, Link, useLocation } from "react-router-dom";
+import MenuIcon from "./MenuIcon";
 
 
 export default function Nav(){
+
+    const [showMenu, setShowMenu]=useState(false)
+
+    const handleShowMenu=()=>{
+        console.log(1)
+        setShowMenu(prevState=>!prevState)
+    }
 
     const location=useLocation();
 
@@ -28,7 +36,7 @@ export default function Nav(){
                         to={item.path} 
                         key={index} 
                         className={`ml-20 cursor-pointer ${
-                            location.pathname === item.path ? 'border-b-4 border-green-500' : ''
+                            location.pathname === item.path ? 'border-b-4 border-[#02A44F]' : ''
                         }`}
                     >
                         {item.name}
@@ -41,6 +49,27 @@ export default function Nav(){
             
 
             </div>
+
+            <div className="large:hidden mid:hidden absolute top-8 right-4 " onClick={handleShowMenu}>
+                <MenuIcon/>
+            </div>
+            {showMenu && (
+                    <div className="fixed w-[40vw] h-screen right-0 flex flex-col bg-[#c1efd7] opacity-100 z-10 font-roboto">
+                        <div className="bg-[#02A44F] p-2 text-white flex">
+                            <div>User</div>
+                            <div className="absolute right-2" onClick={handleShowMenu}>X</div>
+                        </div>
+                        <div className="flex flex-col w-full p-2">
+                            <div className="border-b-[0.2px] border-black py-2">Dairy Fortune</div>
+                            <div className="border-b-[0.2px] border-black py-2">About Us</div>
+                            <div className="border-b-[0.2px] border-black py-2">Blogs</div>
+                            <div className="border-b-[0.2px] border-black py-2">Account</div>
+                            <div className="border-b-[0.2px] border-black py-2">Cart</div>
+                        </div>
+
+                    </div>
+            
+                )}
         </div>
     )
 
