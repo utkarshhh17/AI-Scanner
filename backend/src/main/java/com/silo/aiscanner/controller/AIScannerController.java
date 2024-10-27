@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*") // Enable CORS for all requests to this API endpoint
 public class AIScannerController {
 
     @Autowired

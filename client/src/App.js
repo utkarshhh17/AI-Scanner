@@ -2,7 +2,7 @@
 import { Route, Routes } from "react-router-dom";
 
 
-import HomePage from "./components/Home Page/Home";
+import HomePage from "./Pages/HomePage";
 // import LoginPage from "./components/Login Page/Login";
 // import SignupPage from "./Pages/SignupPage";
 

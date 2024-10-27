@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import MenuIcon from "./MenuIcon";
+import MenuIcon from "../../assets/MenuIcon";
 
 
 export default function Nav(){
@@ -54,7 +54,7 @@ export default function Nav(){
                 <MenuIcon/>
             </div>
             {showMenu && (
-                    <div className="fixed w-[40vw] h-screen right-0 flex flex-col bg-[#c1efd7] opacity-100 z-10 font-roboto">
+                    <div className="fixed w-[40vw] h-full right-0 flex flex-col bg-[#c1efd7] opacity-100 z-10 font-roboto">
                         <div className="bg-[#02A44F] p-2 text-white flex">
                             <div>User</div>
                             <div className="absolute right-2" onClick={handleShowMenu}>X</div>
