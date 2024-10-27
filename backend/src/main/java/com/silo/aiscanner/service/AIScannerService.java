@@ -3,7 +3,10 @@ package com.silo.aiscanner.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.silo.aiscanner.dto.CattleUploadResponse;
+import com.silo.aiscanner.entity.MediaDetails;
+import com.silo.aiscanner.entity.ModelGeneratedData;
 import com.silo.aiscanner.entity.User;
+import com.silo.aiscanner.repository.ModelGeneratedDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -14,13 +17,18 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.Charset;
-
+import java.time.LocalDateTime;
 
 
 @Service
 public class AIScannerService {
 
     private final RestTemplate restTemplate;
+    @Autowired
+    private ModelGeneratedDataRepository modelGeneratedDataRepository;
+
+
+
 
     @Autowired
     public AIScannerService(RestTemplate restTemplate) {
@@ -29,9 +37,15 @@ public class AIScannerService {
                 .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
     }
 
+
+
+
+
+
+
     public ResponseEntity<byte[]> uploadCattleImages(MultipartFile sideImg, MultipartFile frontImg,
                                                      MultipartFile rearImg, MultipartFile video,
-                                                     User user) throws IOException {
+                                                     User user, MediaDetails a) throws IOException {
 
         String url = "https://scanner.silofortune.com/api/v2/cattle-scanner";
 
@@ -68,15 +82,11 @@ public class AIScannerService {
             });
         }
         body.add("language", user.getLang());
-        System.out.println(body);
-
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-
         // response is getting within 5 seconds
         String response = new String(restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class).getBody().getBytes(Charset.forName("UTF-8")));
-
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonResponse = objectMapper.readTree(response);
@@ -87,13 +97,22 @@ public class AIScannerService {
         uploadResponse.setCity(user.getCity());
         uploadResponse.setOriginalResponse(jsonResponse);
 
-        return sendJsonToApiAndGetPdf(uploadResponse);
+        return sendJsonToApiAndGetPdf(uploadResponse, a);
 
     }
 
 
 
-    public ResponseEntity<byte[]> sendJsonToApiAndGetPdf(CattleUploadResponse json) {
+
+
+
+
+
+
+
+
+
+    public ResponseEntity<byte[]> sendJsonToApiAndGetPdf(CattleUploadResponse json, MediaDetails a) {
         String apiUrl = "http://localhost:8000/api";
 
         // Prepare headers for JSON request
@@ -115,7 +134,34 @@ public class AIScannerService {
         pdfHeaders.setContentDispositionFormData("attachment", "response.pdf");
         pdfHeaders.setContentLength(pdfBytes.length);
 
+
+        saveToModelGeneratedData(null, a, json);
+
         return new ResponseEntity<>(pdfBytes, pdfHeaders, HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
+
+
+    public String saveToModelGeneratedData(ResponseEntity<byte[]> pdf, MediaDetails a, CattleUploadResponse json){
+        ModelGeneratedData modelGeneratedData = new ModelGeneratedData();
+        modelGeneratedData.setUserMediaDetailsId(a.getMediaDetailsId());
+        modelGeneratedData.setUserId(a.getUserId());
+        modelGeneratedData.setJson(json.getOriginalResponse().toString());
+        modelGeneratedData.setModelJsonS3Path("S3 path JSON");
+        modelGeneratedData.setPdfS3Url("PDF s3 URL");
+        modelGeneratedData.setIsDownloaded(1);
+        modelGeneratedData.setIsViewed(1);
+        modelGeneratedData.setCreatedAt(LocalDateTime.now());
+        modelGeneratedData.setUpdatedAt(LocalDateTime.now());
+        modelGeneratedDataRepository.save(modelGeneratedData);
+        return "PDF ";
     }
 
  }

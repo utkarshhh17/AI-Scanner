@@ -1,7 +1,7 @@
 package com.silo.aiscanner.controller;
 
-import com.silo.aiscanner.dto.RegisterDTO;
-import com.silo.aiscanner.dto.VerifyDTO;
+import com.silo.aiscanner.dto.auth.RegisterDTO;
+import com.silo.aiscanner.dto.auth.VerifyDTO;
 import com.silo.aiscanner.entity.User;
 import com.silo.aiscanner.repository.UserRepository;
 import com.silo.aiscanner.service.OtpService;

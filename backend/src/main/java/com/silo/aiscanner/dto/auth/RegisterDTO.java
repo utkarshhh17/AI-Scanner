@@ -1,4 +1,4 @@
-package com.silo.aiscanner.dto;
+package com.silo.aiscanner.dto.auth;
 
 public class RegisterDTO {
     private String phoneNumber;

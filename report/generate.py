@@ -16,7 +16,6 @@ app = FastAPI()
 @app.post("/api")
 async def create_report(request: Request):
     data = await request.json()
-    print(data)
     # data = {
     #     "animal-details": {
     #         "animal-type": "cattle",
