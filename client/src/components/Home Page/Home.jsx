@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, redirect } from "react-router-dom";
 import FileUploadSection from "./FileUploadSection";
 import Nav from "../Nav/Nav";
 import Login from "../Login/Login";
@@ -119,10 +119,17 @@ export default function Home(){
 
             setLoading(false)
 
-            window.location.reload();
-
-            // Open the PDF in a new tab
-            window.open(pdfUrl, '_blank');
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                // IE specific code to save/open blob
+                window.navigator.msSaveOrOpenBlob(pdfBlob, "document.pdf");
+            } else {
+                // Create a new Blob URL
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+            
+                // Open the PDF in a new tab for other browsers
+                window.open(pdfUrl, '_blank');
+            }
+               
             // Optionally, create a link to download the PDF
             // const url = window.URL.createObjectURL(pdfBlob);
             // const a = document.createElement("a");

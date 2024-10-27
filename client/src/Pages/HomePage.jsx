@@ -7,7 +7,7 @@ const HomePage=()=>{
         document.title = 'Gau Sampurna';
       }, []);
     return(
-        <div className='flex flex-col overflow-x-hidden'>
+        <div className='flex flex-col min-h-screen overflow-x-hidden'>
 
             <Home />
             {/* Footer Images */}

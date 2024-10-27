@@ -43,7 +43,7 @@ export default function Nav({setShowLogin}){
     return(
         <div className="flex justify-between w-full">
 
-            <img src='./logo.png' className="mt-2 ml-2 small:h-20"></img>
+            <img src='./logo.png' className="mt-2 ml-2 h-20 small:h-[4rem]"></img>
 
             <div className="small:hidden h-10 flex mt-7 ml-[25vw] font-roboto text-lg">
                 {navItems.map((item, index) => (
@@ -62,11 +62,11 @@ export default function Nav({setShowLogin}){
             </div>
 
             <div className="small:hidden h-10 flex mt-7 mr-10 font-roboto text-lg">
-                <div className="cursor-pointer"><SearchIcon /></div>
-                <div className="ml-10 cursor-pointer"><CartIcon height="38" width="38" /></div>
+                <div className="cursor-pointer"><SearchIcon height="2.5rem" width="2.5rem"/></div>
+                <div className="ml-10 cursor-pointer"><CartIcon height="2.5rem" width="2.5rem" /></div>
                 
                 <div className="flex flex-col">
-                    <button onClick={toggleUser} className="ml-10 cursor-pointer"><UserIcon height="40" width="40" /></button>
+                    <button onClick={toggleUser} className="ml-10 cursor-pointer"><UserIcon height="2.5rem" width="2.5rem" /></button>
                     {showLogOut && user && 
                             <div onClick={handleLogout} className="cursor-pointer absolute ml-5 bg-gray-200 border-[1px] border-gray-400 p-2 top-20 ">
                                 Log Out
