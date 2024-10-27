@@ -5,45 +5,83 @@ import Otp from "./Otp";
 import Register from "./Register";
 export default function Login(){
 
-    const [loginInput, setLoginInput]=useState({"Name":"","Phone Number":"", "Language":""})
-    const [loginStage, setLoginStage]=useState("login")
+    const [loginInput, setLoginInput]=useState({name:"",phoneNumber:"", city:"", lang:""})
+    const [loginStage, setLoginStage]=useState("Login")
     const [otp, setOtp]=useState("")
     
     const [error, setError]=useState("")
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setLoginInput(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+
+      
+            setLoginInput(prevState => ({
+                ...prevState,
+                [name]: name === "phoneNumber" && !value.startsWith("91") 
+                    ? `91${value.replace(/^91/, '')}`  // Add 91 only if it's not there and remove extra 91 if already present
+                    : value
+            }));
+        
     };
 
     const handleLogin=async ()=>{
-        const dataToSend={phoneNumber:loginInput["Phone Number"] }
+        const dataToSend={phoneNumber:loginInput.phoneNumber }
         try {
-            const response = await axios.post("http://localhost:8000/api/check-user", dataToSend);
+            const response = await axios.post("http://localhost:8081/auth/send-otp", dataToSend);
 
             if (response.status === 200) {
-                setLoginStage("otp"); // Move to OTP verification step
+                console.log(response.data)
+                // setLoginStage("OTP Verification"); // Move to OTP verification step
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+
+    };
+
+    const handleRegister=async()=>{
+
+        try {
+            const response = await axios.post("http://localhost:8081/auth/register", loginInput);
+
+            if (response.status === 200) {
+                console.log(response.data)
+                setLoginStage("OTP Verification"); // Move to OTP verification step
             }
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 setError("Looks like you are not registered. Please Register.");
-                setLoginStage("register");
+                setLoginStage("Register");
             } else {
                 console.error("An error occurred:", error);
             }
         }
-
     };
 
     const handleOtpChange = (e) => {
         setOtp(e.target.value)
     };
 
-    const otpVerification=()=>{
 
+    const otpVerification=async ()=>{
+
+        const dataToSend={otp:otp, phoneNumber:loginInput.phoneNumber}
+      
+        try {
+            const response = await axios.post("http://localhost:8081/auth/verify-otp", dataToSend);
+
+            if (response.status === 200) {
+                console.log(response.data)
+                setLoginStage("OTP Verification"); // Move to OTP verification step
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                setError("Looks like you are not registered. Please Register.");
+                setLoginStage("Register");
+            } else {
+                console.error("An error occurred:", error);
+            }
+        }
     }
 
     const slideLeftOut = {
@@ -64,23 +102,23 @@ export default function Login(){
             }
             <AnimatePresence mode="wait">
 
-                {loginStage==='login' && 
+                {loginStage==='Login' && 
                     <motion.div key="name-phone-form" variants={slideLeftOut} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col">
 
                         <div className="italic mt-2">Enter your Phone Number</div>
-                        <input type="text" name="Phone Number" value={loginInput["Phone Number"]} onChange={handleInputChange}
+                        <input type="text" name="phoneNumber" value={loginInput.phoneNumber} onChange={handleInputChange}
                         className="large:min-w-[30vw] small:min-w-[60vw] focus:outline-none p-1 border-[0.05px] border-[#737775] rounded-sm"></input>
                         
                         <button onClick={handleLogin} className="py-2 mt-5 bg-[#02A44F] text-white rounded-lg shadow-lg z-40">Login</button>                    
                     </motion.div>
                 }
 
-                {loginStage==='otp' && 
-                    <Otp handleOtpChange={handleOtpChange} otp={otp}/>
+                {loginStage==='OTP Verification' && 
+                    <Otp handleOtpChange={handleOtpChange} otp={otp} handleVerification={otpVerification}/>
                 }
 
-                {loginStage==='register' &&
-                    <Register />
+                {loginStage==='Register' &&
+                    <Register loginInput={loginInput} handleInputChange={handleInputChange} handleRegister={handleRegister} />
                 }
 
                         

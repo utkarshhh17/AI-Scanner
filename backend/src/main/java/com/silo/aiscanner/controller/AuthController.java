@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*") // Enable CORS for all requests to this API endpoint
 public class AuthController {
 
     @Autowired

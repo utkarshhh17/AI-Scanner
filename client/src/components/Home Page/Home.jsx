@@ -9,7 +9,7 @@ export default function Home(){
 
     // const {user}= useAuthContext()
     const user=false
-    const [showLogin, setShowLogin]=useState(true)
+    const [showLogin, setShowLogin]=useState(false)
 
     const css=user?"":"mt-20"
     const [formData, setFormData] = useState({
@@ -144,7 +144,7 @@ export default function Home(){
                             </div>
 
                             <div className="mt-5">   
-                                <button className="bg-[#02A44F] p-4 small:p-2 text-white rounded-md shadow-xl hover:scale-105 focus:outline-none">Scan Now</button>
+                                <button onClick={()=>setShowLogin(true)} className="bg-[#02A44F] p-4 small:p-2 text-white rounded-md shadow-xl hover:scale-105 focus:outline-none">Scan Now</button>
 
                             </div>
                         </div>
