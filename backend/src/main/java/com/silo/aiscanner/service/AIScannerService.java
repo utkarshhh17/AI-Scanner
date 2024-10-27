@@ -2,6 +2,8 @@ package com.silo.aiscanner.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.silo.aiscanner.dto.CattleUploadResponse;
+import com.silo.aiscanner.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -10,14 +12,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+
 
 
 @Service
@@ -34,7 +31,7 @@ public class AIScannerService {
 
     public ResponseEntity<byte[]> uploadCattleImages(MultipartFile sideImg, MultipartFile frontImg,
                                                      MultipartFile rearImg, MultipartFile video,
-                                                     String lang) throws IOException {
+                                                     User user) throws IOException {
 
         String url = "https://scanner.silofortune.com/api/v2/cattle-scanner";
 
@@ -70,7 +67,7 @@ public class AIScannerService {
                 }
             });
         }
-        body.add("language", lang);
+        body.add("language", user.getLang());
         System.out.println(body);
 
 
@@ -84,14 +81,19 @@ public class AIScannerService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonResponse = objectMapper.readTree(response);
 
+        CattleUploadResponse uploadResponse = new CattleUploadResponse();
+        uploadResponse.setName(user.getName());
+        uploadResponse.setPhone(user.getPhoneNumber());
+        uploadResponse.setCity(user.getCity());
+        uploadResponse.setOriginalResponse(jsonResponse);
 
-        return sendJsonToApiAndGetPdf(jsonResponse);
+        return sendJsonToApiAndGetPdf(uploadResponse);
 
     }
 
 
 
-    public ResponseEntity<byte[]> sendJsonToApiAndGetPdf(JsonNode json) {
+    public ResponseEntity<byte[]> sendJsonToApiAndGetPdf(CattleUploadResponse json) {
         String apiUrl = "http://localhost:8000/api";
 
         // Prepare headers for JSON request
@@ -99,7 +101,7 @@ public class AIScannerService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // Prepare the request entity
-        HttpEntity<JsonNode> requestEntity = new HttpEntity<>(json, headers);
+        HttpEntity<CattleUploadResponse> requestEntity = new HttpEntity<>(json, headers);
 
         // Make the request and receive the PDF response
         byte[] pdfBytes = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, byte[].class).getBody();

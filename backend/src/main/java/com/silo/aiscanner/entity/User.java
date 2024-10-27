@@ -26,6 +26,9 @@ public class User {
     @Column(name = "otp")
     private String otp;
 
+    @Column(name = "city")
+    private String city;
+
     @Column(name = "phone_verified")
     private boolean isVerified;
 
@@ -38,6 +41,13 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public long getUserId() {
         return userId;
