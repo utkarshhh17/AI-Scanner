@@ -27,7 +27,7 @@ public class AIScannerController {
             @RequestParam(value = "front-img") MultipartFile frontImg,
             @RequestParam(value = "rear-img") MultipartFile rearImg,
             @RequestParam(value = "video", required = false) MultipartFile video,
-            @RequestParam(value = "lang") String lang) throws IOException {
+            @RequestParam(value = "language") String lang) throws IOException {
 
         // Call the service method to upload images and get the PDF response
         ResponseEntity<byte[]> responseEntity = aiScannerService.uploadCattleImages(sideImg, frontImg, rearImg, video, lang);
