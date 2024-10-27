@@ -77,6 +77,7 @@ public class AuthController {
         // if number already exists, display the number already exists
         if(user!=null) return new ResponseEntity<>("User Exists with this number", HttpStatus.BAD_REQUEST);
 
+        System.out.println(registerDTO.getPlace());
 
         // if number does not exist, create a new user
         // then prompt the user to the otp page
@@ -84,6 +85,7 @@ public class AuthController {
         user.setName(registerDTO.getName());
         user.setPhoneNumber(registerDTO.getPhoneNumber());
         user.setLang(registerDTO.getLang());
+        user.setCity(registerDTO.getPlace());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         String otp = otpService.generateOTP();

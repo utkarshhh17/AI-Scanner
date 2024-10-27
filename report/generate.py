@@ -16,6 +16,7 @@ app = FastAPI()
 @app.post("/api")
 async def create_report(request: Request):
     data = await request.json()
+    print(data)
     # data = {
     #     "animal-details": {
     #         "animal-type": "cattle",
@@ -184,46 +185,48 @@ async def create_report(request: Request):
     }
 
     diet_data = {
-        "Maize silage": [data["diet"]["ms_based_diet"]["maize-silage"],
-                         data["diet"]["gd_fodder_based_diet"]["maize-silage"]],
+        "Maize silage": [data['modelData']["diet"]["ms_based_diet"]["maize-silage"],
+                         data['modelData']["diet"]["gd_fodder_based_diet"]["maize-silage"]],
 
-        "Green Maize Fodder": [data["diet"]["ms_based_diet"]["green-maize-fodder"],
-                               data["diet"]["gd_fodder_based_diet"]["green-maize-fodder"]],
+        "Green Maize Fodder": [data['modelData']["diet"]["ms_based_diet"]["green-maize-fodder"],
+                               data['modelData']["diet"]["gd_fodder_based_diet"]["green-maize-fodder"]],
 
-        "Ragi Straw/Wheat Straw/Paddy Straw": [data["diet"]["ms_based_diet"]["rs-ws-ps"],
-                                               data["diet"]["gd_fodder_based_diet"]["rs-ws-ps"]],
+        "Ragi Straw/Wheat Straw/Paddy Straw": [data['modelData']["diet"]["ms_based_diet"]["rs-ws-ps"],
+                                               data['modelData']["diet"]["gd_fodder_based_diet"]["rs-ws-ps"]],
 
-        "Green Fodder( BNH-11-14/Super Napier/COFS 29,30)": [data["diet"]["ms_based_diet"]["green-fodder"],
-                                                             data["diet"]["gd_fodder_based_diet"]["green-fodder"]],
+        "Green Fodder( BNH-11-14/Super Napier/COFS 29,30)": [data['modelData']["diet"]["ms_based_diet"]["green-fodder"],
+                                                             data['modelData']["diet"]["gd_fodder_based_diet"]["green-fodder"]],
 
-        "Cotton seed cake": [data["diet"]["ms_based_diet"]["cotton-seed-cake"],
-                             data["diet"]["gd_fodder_based_diet"]["cotton-seed-cake"]],
+        "Cotton seed cake": [data['modelData']["diet"]["ms_based_diet"]["cotton-seed-cake"],
+                             data['modelData']["diet"]["gd_fodder_based_diet"]["cotton-seed-cake"]],
 
-        "Maize cracked": [data["diet"]["ms_based_diet"]["maize-cracked"],
-                          data["diet"]["gd_fodder_based_diet"]["maize-cracked"]],
+        "Maize cracked": [data['modelData']["diet"]["ms_based_diet"]["maize-cracked"],
+                          data['modelData']["diet"]["gd_fodder_based_diet"]["maize-cracked"]],
 
-        "Groundnut cake": [data["diet"]["ms_based_diet"]["grnd-nut-cake"],
-                           data["diet"]["gd_fodder_based_diet"]["grnd-nut-cake"]],
+        "Groundnut cake": [data['modelData']["diet"]["ms_based_diet"]["grnd-nut-cake"],
+                           data['modelData']["diet"]["gd_fodder_based_diet"]["grnd-nut-cake"]],
 
-        "CARGILL Milkogen (8000)-18-20% CP": [data["diet"]["ms_based_diet"]["cmg-18"],
-                                              data["diet"]["gd_fodder_based_diet"]["cmg-18"]],
+        "CARGILL Milkogen (8000)-18-20% CP": [data['modelData']["diet"]["ms_based_diet"]["cmg-18"],
+                                              data['modelData']["diet"]["gd_fodder_based_diet"]["cmg-18"]],
 
-        "CARGILL Milkogen (8000)-22% CP": [data["diet"]["ms_based_diet"]["cmg-22"],
-                                           data["diet"]["gd_fodder_based_diet"]["cmg-22"]],
+        "CARGILL Milkogen (8000)-22% CP": [data['modelData']["diet"]["ms_based_diet"]["cmg-22"],
+                                           data['modelData']["diet"]["gd_fodder_based_diet"]["cmg-22"]],
 
-        "Dairy Fortune (**Note : in Grams )": [data["diet"]["ms_based_diet"]["dairy-fortune"],
-                                               data["diet"]["gd_fodder_based_diet"]["dairy-fortune"]],
+        "Dairy Fortune (**Note : in Grams )": [data['modelData']["diet"]["ms_based_diet"]["dairy-fortune"],
+                                               data['modelData']["diet"]["gd_fodder_based_diet"]["dairy-fortune"]],
     }
 
     rendered_html = template.render(
 
-        # farmer_details=data['farmer-details'],
-        animal_details=data['animal-details'],
-        animal_economic_status=data['animal-economic-status'],
+        name=data['name'],
+        phoneNumber=data['phoneNumber'][2:],
+        location=data['location'],
+        animal_details=data['modelData']['animal-details'],
+        animal_economic_status=data['modelData']['animal-economic-status'],
         diet=diet_data,
-        general_health_condition=data['general-health-condition'],
+        general_health_condition=data['modelData']['general-health-condition'],
 
-        system_of_disorder=data['system-of-disorder'],
+        system_of_disorder=data['modelData']['system-of-disorder'],
 
         general_health_conditions=general_health_conditions,  # Pass the conditions to the template
 
