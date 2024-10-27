@@ -22,6 +22,7 @@ public class OtpService {
     }
 
     public void sendOTP(String message, String phoneNumber) {
+        System.out.println("Sending OTP: "+phoneNumber);
         try {
             PublishRequest request = PublishRequest.builder()
                     .message(message)

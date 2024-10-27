@@ -13,7 +13,7 @@ function FileUploadSection({ handleFileUpload, errors, formData }) {
                 <img src="./file-upload.png" alt="upload icon" />
                 Click to Upload
                 {formData[`${label}-img`] && (
-                    <div className="text-green-500 mt-2">Picture uploaded successfully!</div>
+                    <div className="text-green-500 mt-2 w-full flex justify-center">Picture uploaded successfully!</div>
                 )}
               </div>
             </label>

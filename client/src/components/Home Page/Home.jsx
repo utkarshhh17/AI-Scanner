@@ -1,35 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import FileUploadSection from "./FileUploadSection";
 import Nav from "../Nav/Nav";
 import Login from "../Login/Login";
+import Loader from "../../assets/Loader";
 
 export default function Home(){
 
-    // const {user}= useAuthContext()
-    const user=false
+    const loginRef = useRef(null); // Create a ref for the login dialog
+
+    
+
+    const {user, dispatch}=useAuthContext()
+   
     const [showLogin, setShowLogin]=useState(false)
+    const [loading, setLoading]=useState(false)
+    const loadingCss=loading===true?'opacity-50':''
 
     const css=user?"":"mt-20"
     const [formData, setFormData] = useState({
         "front-img": null,
         "rear-img": null,
         "side-img": null,
-        "video": null,
-        "lang":'',
+        "video": null
     });
-    const [errors, setErrors] = useState({  "front-img": null, "rear-img": null, "side-img": null, "video": null, "launguage":null });
-    const [selectedLanguage, setSelectedLanguage] = useState("");
+    const [errors, setErrors] = useState({  "front-img": null, "rear-img": null, "side-img": null, "video": null});
 
-    const handleLanguageChange = (e) => {
-        const selectedLang = e.target.value;
-        setFormData((prevFormData) => ({
-        ...prevFormData,
-        lang: selectedLang,
-        }));
+
+    const handleClickOutside = (event) => {
+        console.log(event)
+        // Check if the clicked element is outside the login dialog
+        if (loginRef.current && !loginRef.current.contains(event.target)) {
+            
+            setShowLogin(false); // Close the dialog
+        }
     };
 
+    useEffect(() => {
+        // Attach the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        // Cleanup the event listener on component unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    
     const handleFileUpload = (e, type) => {
         const file = e.target.files[0];
         if (file) {
@@ -57,13 +75,7 @@ export default function Home(){
       };
 
     const handleSubmit = async () => {
-        if (!formData.lang) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              lang: "Please select a language",
-            }));
-            return;
-        }
+        
 
         // Create a FormData object
         const dataToSend = new FormData();
@@ -75,12 +87,18 @@ export default function Home(){
             }
         }
 
+        setLoading(true)
+
         console.log(dataToSend);
         try {
+            console.log("header is: "+user)
             // Send the POST request to your Spring Boot server
             const response = await fetch("http://localhost:8081/api/upload", {
                 method: "POST",
                 body: dataToSend,
+                headers:{
+                    "Session-ID":user
+                }
             });
     
             if (!response.ok) {
@@ -92,13 +110,16 @@ export default function Home(){
                 "rear-img": null,
                 "side-img": null,
                 "video": null,
-                "lang":'',
             }))
-    
+            
             // Get the response data (PDF)
             const pdfBlob = await response.blob();
             // Create a new Blob URL
             const pdfUrl = URL.createObjectURL(pdfBlob);
+
+            setLoading(false)
+
+            window.location.reload();
 
             // Open the PDF in a new tab
             window.open(pdfUrl, '_blank');
@@ -113,6 +134,10 @@ export default function Home(){
             // window.URL.revokeObjectURL(url); // Clean up the URL object
         } catch (error) {
             console.error("Error uploading files:", error);
+            setLoading(false)
+
+            window.location.reload();
+
             // Handle any errors that occur during the upload
         }
     };
@@ -122,8 +147,8 @@ export default function Home(){
     return(
         <div className="flex max-w-screen flex-col overflow-x-hidden bg-repeat" style={{ backgroundImage: `url('/clouds.png')` }}>
 
-            <Nav />
-            <div className="h-full w-full flex flex-col justify-center items-center small:justify-start mb-20">
+            <Nav setShowLogin={setShowLogin} />
+            <div className={`h-full w-full flex flex-col justify-center items-center small:justify-start mb-20 ${loadingCss}`}>
                 
                 <div className={`flex flex-col relative large:max-w-[50vw] ${css} small:max-w-[80vw] large:relative large:right-80`}>
                     
@@ -153,33 +178,21 @@ export default function Home(){
                         <div className="w-full flex flex-col items-center">
                             <FileUploadSection handleFileUpload={handleFileUpload} errors={errors} formData={formData} />
                             
-                            <div className="mt-4 z-20">
-                                {errors["language"] && (
-                                    <div className="text-red-500 mb-2">{errors["language"]}</div>
-                                )}
-                                <label className="font-roboto small:text-sm">Select Language:</label>
-                                <select
-                                value={formData["lang"]}
-                                onChange={handleLanguageChange}
-                                className="border p-2 small:text-xs rounded-md ml-2"
-                                >
-                                    <option value="" disabled>
-                                        Select a language
-                                    </option>
-                                    <option value="English">English</option>
-                                    <option value="Hindi">Hindi</option>
-                                    <option value="Kannada">Kannada</option>
-                                </select>
-                            </div>
                             <button onClick={handleSubmit} className="focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10">Upload</button> 
                         </div>
                     }
                 </div>
             </div>
 
+            {loading && 
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader />
+                </div>
+            }
+
             {showLogin && (
-                <div className="absolute h-full w-full flex justify-center items-center"> 
-                    <Login />
+                <div  className="absolute h-full w-full flex justify-center items-center"> 
+                    <Login loginRef={loginRef} setShowLogin={setShowLogin}/>
                   
                 </div>
 

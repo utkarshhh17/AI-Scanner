@@ -1,9 +1,12 @@
 import { useState } from "react";
 import {motion, AnimatePresence} from "framer-motion";
 import axios from "axios";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import Otp from "./Otp";
 import Register from "./Register";
-export default function Login(){
+export default function Login({setShowLogin, loginRef}){
+
+    const {user, dispatch}=useAuthContext()
 
     const [loginInput, setLoginInput]=useState({name:"",phoneNumber:"", city:"", lang:""})
     const [loginStage, setLoginStage]=useState("Login")
@@ -25,27 +28,17 @@ export default function Login(){
     };
 
     const handleLogin=async ()=>{
-        const dataToSend={phoneNumber:loginInput.phoneNumber }
+        const dataToSend=loginInput.phoneNumber 
+        console.log("Phone Number is: " +dataToSend)
         try {
-            const response = await axios.post("http://localhost:8081/auth/send-otp", dataToSend);
+            const response = await axios.post("http://localhost:8081/auth/send-otp", dataToSend, {
+                headers: {
+                    'Content-Type': 'text/plain' // Send as plain text
+                }
+            });
 
             if (response.status === 200) {
-                console.log(response.data)
-                // setLoginStage("OTP Verification"); // Move to OTP verification step
-            }
-        } catch (error) {
-            console.error("An error occurred:", error);
-        }
-
-    };
-
-    const handleRegister=async()=>{
-
-        try {
-            const response = await axios.post("http://localhost:8081/auth/register", loginInput);
-
-            if (response.status === 200) {
-                console.log(response.data)
+                console.log("positive")
                 setLoginStage("OTP Verification"); // Move to OTP verification step
             }
         } catch (error) {
@@ -55,6 +48,23 @@ export default function Login(){
             } else {
                 console.error("An error occurred:", error);
             }
+        }
+
+    };
+
+    const handleRegister=async()=>{
+
+        try {
+            const response = await axios.post("http://localhost:8081/auth/register", loginInput);
+
+            if (response.status === 201) {
+                // console.log(response.data)
+                setLoginInput({name:"",phoneNumber:"", city:"", lang:""})
+                setLoginStage("OTP Verification"); // Move to OTP verification step
+            }
+        } catch (error) { 
+            console.error("An error occurred:", error);
+            
         }
     };
 
@@ -70,17 +80,16 @@ export default function Login(){
         try {
             const response = await axios.post("http://localhost:8081/auth/verify-otp", dataToSend);
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log(response.data)
-                setLoginStage("OTP Verification"); // Move to OTP verification step
+                localStorage.setItem('ai-scanner-user', JSON.stringify(response.data))                       
+                dispatch({type: 'LOGIN', payload: response.data})
+                setShowLogin(false) // Move to OTP verification step
+
+                
             }
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                setError("Looks like you are not registered. Please Register.");
-                setLoginStage("Register");
-            } else {
-                console.error("An error occurred:", error);
-            }
+            console.error("An error occurred:", error);
         }
     }
 
@@ -93,7 +102,7 @@ export default function Login(){
    
 
     return(
-    <div className="flex flex-col items-center bg-[#d1f4e2] large:min-w-[45vw] small:min-w-[80vw] font-roboto text-lg rounded-lg small:text-sm p-10 z-20">
+    <div ref={loginRef} className="flex flex-col items-center bg-[#d1f4e2] large:min-w-[45vw] small:min-w-[80vw] font-roboto text-lg rounded-lg small:text-sm p-10 z-20">
             <div className="text-3xl small:text-xl font-black"> Login</div>
             <div>Login to enjoy all the services</div>
             {/* <div> without any ads for free!</div> */}

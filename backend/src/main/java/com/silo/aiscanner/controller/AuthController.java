@@ -30,6 +30,7 @@ public class AuthController {
 
         // if phone number does not exist, return 404
         // prompt the user to signup page
+        System.out.println("Phone number is: "+phoneNumber);
         if (user == null) {
             return new ResponseEntity<>("This number is not registered", HttpStatus.NOT_FOUND);
         }
@@ -95,6 +96,7 @@ public class AuthController {
         user.setOtp(otp);
         user.setVerified(false);
         userRepository.save(user);
-        return new ResponseEntity<>("User Created, but not verified", HttpStatus.CREATED);
+        System.out.println("User saved successfully");
+            return new ResponseEntity<>("User Created, but not verified", HttpStatus.CREATED);
     }
 }

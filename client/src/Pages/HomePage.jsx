@@ -7,15 +7,15 @@ const HomePage=()=>{
         document.title = 'Gau Sampurna';
       }, []);
     return(
-        <div className='overflow-x-hidden'>
+        <div className='flex flex-col overflow-x-hidden'>
 
             <Home />
             {/* Footer Images */}
-            {/* <div className="relative w-full">  */}
+            <div className="relative w-full large:mt-10"> 
                 {/* Footer Grass Image */}
                 <img
                 src="./footer-grass.png"
-                className="absolute bottom-0 small:h-40 h-80 w-full"
+                className="bottom-0 small:h-40 h-80 w-full"
                 />
 
                 {/* Cow Image */}
@@ -23,7 +23,7 @@ const HomePage=()=>{
                 src="./cow.png"
                 className="absolute bottom-0 right-0 z-2 small:h-40 h-[25vw]"
                 />
-            {/* </div>  */}
+            </div> 
     
         </div>
     )
