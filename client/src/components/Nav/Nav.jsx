@@ -13,10 +13,15 @@ export default function Nav({setShowLogin}){
     const {user, dispatch}=useAuthContext()
 
     const [showMenu, setShowMenu]=useState(false)
-    const [showLogOut, setShowLogOut]=useState(false)
+    const [showUserOptions, setShowUserOptions]=useState(false)
 
     const toggleUser=()=>{
-        setShowLogOut(prevState=>!prevState)
+        setShowUserOptions(prevState=>!prevState)
+    }
+
+    const handleSignIn=()=>{
+        setShowUserOptions(false);
+        setShowLogin(true);
     }
 
     const handleLogout=()=>{
@@ -43,9 +48,9 @@ export default function Nav({setShowLogin}){
     return(
         <div className="flex justify-between w-full">
 
-            <img src='./logo.png' className="mt-2 ml-2 h-20 small:h-[4rem]"></img>
+           <Link to="/"> <img src='./logo.png' className="mt-2 ml-2 h-20 small:h-[4rem]"></img></Link>
 
-            <div className="small:hidden h-10 flex mt-7 ml-[25vw] font-roboto text-lg">
+            <div className="small:hidden mid:hidden h-10 flex mt-7 ml-[25vw] font-roboto text-lg">
                 {navItems.map((item, index) => (
                 
                     <Link 
@@ -61,27 +66,28 @@ export default function Nav({setShowLogin}){
 
             </div>
 
-            <div className="small:hidden h-10 flex mt-7 mr-10 font-roboto text-lg">
+            <div className="small:hidden mid:hidden h-10 flex mt-7 mr-10 font-roboto text-lg">
                 <div className="cursor-pointer"><SearchIcon height="2.5rem" width="2.5rem"/></div>
                 <div className="ml-10 cursor-pointer"><CartIcon height="2.5rem" width="2.5rem" /></div>
                 
                 <div className="flex flex-col">
                     <button onClick={toggleUser} className="ml-10 cursor-pointer"><UserIcon height="2.5rem" width="2.5rem" /></button>
-                    {showLogOut && user && 
+                    {showUserOptions && !user && 
+                            <div onClick={handleSignIn} className="cursor-pointer absolute ml-5 bg-gray-200 border-[1px] border-gray-400 p-2 top-20 ">
+                                Sign In
+                            </div>  
+                    }
+                    {showUserOptions && user && 
                             <div onClick={handleLogout} className="cursor-pointer absolute ml-5 bg-gray-200 border-[1px] border-gray-400 p-2 top-20 ">
                                 Log Out
                             </div>  
                     }
-                    {showLogOut && !user && 
-                            <div onClick={()=>{setShowLogOut(false);setShowLogin(true);}} className="cursor-pointer absolute ml-5 bg-gray-200 border-[1px] border-gray-400 p-2 top-20 ">
-                                Sign In
-                            </div>  
-                    }
+               
                 </div>
 
             </div>
 
-            <div className="large:hidden mid:hidden absolute top-8 right-4 " onClick={handleShowMenu}>
+            <div className="large:hidden absolute top-8 right-4 " onClick={handleShowMenu}>
                 <MenuIcon/>
             </div>
             {showMenu && (
@@ -97,10 +103,12 @@ export default function Nav({setShowLogin}){
                                 <div className="ml-2">About Us</div>
                             </div>
                             <div className="border-b-[0.2px] border-black py-2">Blogs</div>
-                            <div onClick={()=>{if(user){handleLogout();} else{setShowMenu();setShowLogin(true);}}} className="flex justify-start items-center border-b-[0.2px] border-black py-2">
-                                <UserIcon height="25" width="25" />
-                                <div className="ml-2">Account</div>
-                            </div>
+                            {user && 
+                                <div onClick={()=>{if(user){handleLogout();}}} className="flex justify-start items-center border-b-[0.2px] border-black py-2">
+                                    <UserIcon height="25" width="25" />
+                                    <div className="ml-2">Account</div>
+                                </div>
+                            }
                             <div className="flex justify-start items-center border-b-[0.2px] border-black py-2">
                                 <CartIcon height="25" width="25" />
                                 <div className="ml-2">Cart</div>

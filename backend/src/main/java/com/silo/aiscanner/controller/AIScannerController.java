@@ -34,9 +34,9 @@ public class AIScannerController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> upload(
-            @RequestParam(value = "side-img") MultipartFile sideImg,
-            @RequestParam(value = "front-img") MultipartFile frontImg,
-            @RequestParam(value = "rear-img") MultipartFile rearImg,
+            @RequestParam(value = "side ") MultipartFile sideImg,
+            @RequestParam(value = "front") MultipartFile frontImg,
+            @RequestParam(value = "rear") MultipartFile rearImg,
             @RequestParam(value = "video", required = false) MultipartFile video,
             @RequestHeader("Session-ID") String sessionId) throws IOException {
 

@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        // 'footer-grass': "url('./assets/footer-grass.png')",
+      },
       screens:{
         'small': { 'max': '640px' },
         'mid': { 'min': '641px', 'max':'1000px' },

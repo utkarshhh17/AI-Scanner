@@ -4,7 +4,7 @@ import axios from "axios";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import Otp from "./Otp";
 import Register from "./Register";
-export default function Login({setShowLogin, loginRef}){
+export default function Login({loginRef}){
 
     const {user, dispatch}=useAuthContext()
 
@@ -20,15 +20,13 @@ export default function Login({setShowLogin, loginRef}){
       
             setLoginInput(prevState => ({
                 ...prevState,
-                [name]: name === "phoneNumber" && !value.startsWith("91") 
-                    ? `91${value.replace(/^91/, '')}`  // Add 91 only if it's not there and remove extra 91 if already present
-                    : value
+                [name]: value
             }));
         
     };
 
     const handleLogin=async ()=>{
-        const dataToSend=loginInput.phoneNumber 
+        const dataToSend="91"+loginInput.phoneNumber 
         console.log("Phone Number is: " +dataToSend)
         try {
             const response = await axios.post("http://localhost:8081/auth/send-otp", dataToSend, {
@@ -55,11 +53,17 @@ export default function Login({setShowLogin, loginRef}){
     const handleRegister=async()=>{
 
         try {
-            const response = await axios.post("http://localhost:8081/auth/register", loginInput);
+            const dataToSend = {
+                ...loginInput, // Spread the existing properties
+                phoneNumber: "91"+loginInput.phoneNumber, // Modify the phone number with country code '91'
+            };
+
+           
+            const response = await axios.post("http://localhost:8081/auth/register", dataToSend);
 
             if (response.status === 201) {
                 // console.log(response.data)
-                setLoginInput({name:"",phoneNumber:"", city:"", lang:""})
+               
                 setLoginStage("OTP Verification"); // Move to OTP verification step
             }
         } catch (error) { 
@@ -75,16 +79,17 @@ export default function Login({setShowLogin, loginRef}){
 
     const otpVerification=async ()=>{
 
-        const dataToSend={otp:otp, phoneNumber:loginInput.phoneNumber}
-      
+        const dataToSend={otp:otp, phoneNumber:"91"+loginInput.phoneNumber}
+        console.log(dataToSend);
         try {
             const response = await axios.post("http://localhost:8081/auth/verify-otp", dataToSend);
 
             if (response.status === 201) {
+                setLoginInput({name:"", city:"",phoneNumber:"", lang:""})
                 console.log(response.data)
                 localStorage.setItem('ai-scanner-user', JSON.stringify(response.data))                       
                 dispatch({type: 'LOGIN', payload: response.data})
-                setShowLogin(false) // Move to OTP verification step
+         
 
                 
             }
@@ -103,6 +108,7 @@ export default function Login({setShowLogin, loginRef}){
 
     return(
     <div ref={loginRef} className="flex flex-col items-center bg-[#d1f4e2] large:min-w-[45vw] small:min-w-[80vw] font-roboto text-lg rounded-lg small:text-sm p-10 z-20">
+        
             <div className="text-3xl small:text-xl font-black"> Login</div>
             <div>Login to enjoy all the services</div>
             {/* <div> without any ads for free!</div> */}
@@ -112,7 +118,7 @@ export default function Login({setShowLogin, loginRef}){
             <AnimatePresence mode="wait">
 
                 {loginStage==='Login' && 
-                    <motion.div key="name-phone-form" variants={slideLeftOut} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.5 }} className="flex flex-col">
+                    <motion.div key="name-phone-form" variants={slideLeftOut} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="flex flex-col">
 
                         <div className="italic mt-2">Enter your Phone Number</div>
                         <input type="text" name="phoneNumber" value={loginInput.phoneNumber} onChange={handleInputChange}

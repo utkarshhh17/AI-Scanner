@@ -51,6 +51,7 @@ public class AuthController {
     public ResponseEntity<?> verifyOtp(@RequestBody VerifyDTO verifyDTO) {
         // This method is called when user enters otp
         // session id is return , prompt the user to home page
+        System.out.println(verifyDTO.getPhoneNumber());
         User user = userRepository.findByPhoneNumber(verifyDTO.getPhoneNumber());
 
         if(user.isVerified()==true){

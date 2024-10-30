@@ -3,8 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 
 import HomePage from "./Pages/HomePage";
-// import LoginPage from "./components/Login Page/Login";
-// import SignupPage from "./Pages/SignupPage";
+import UploadPage from "./Pages/UploadPage";
 
 
 function App() {
@@ -24,7 +23,7 @@ function App() {
           document.documentElement.style.fontSize = '16px';
         } else {
           // Larger screen, Chrome browser
-          document.documentElement.style.fontSize = '12.5px';
+          document.documentElement.style.fontSize = '13px';
         }
       } else {
         if (screenWidth <= 641) {
@@ -33,7 +32,7 @@ function App() {
           document.documentElement.style.fontSize = '16px';
         } else {
           // Larger screen, Chrome browser
-          document.documentElement.style.fontSize = '12.5px';
+          document.documentElement.style.fontSize = '13px';
         }
       }
 
@@ -47,8 +46,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} >
         </Route>
-        {/* <Route path="/login" element={<LoginPage />} >
-        </Route> */}
+        <Route path="/upload" element={<UploadPage />} >
+        </Route>
 
      
       </Routes>

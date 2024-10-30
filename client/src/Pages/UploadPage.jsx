@@ -1,16 +1,14 @@
+import { useEffect } from "react";
+import Upload from "../components/Upload Page/Upload"
+export default function UploadPage(){
 
-import Home from '../components/Home Page/Home';
-import { useEffect } from 'react'
-
-const HomePage=()=>{
     useEffect(() => {
         document.title = 'Gau Sampurna';
       }, []);
     return(
         <div className='flex flex-col min-h-screen overflow-x-hidden'>
 
-            <Home />
-            
+            <Upload />
             {/* Footer Images */}
             <div className="relative  mb-0 w-full large:mt-10"> 
                 {/* Footer Grass Image */}
@@ -28,6 +26,5 @@ const HomePage=()=>{
     
         </div>
     )
-}
 
-export default HomePage;
+}
