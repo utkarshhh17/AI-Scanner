@@ -1,17 +1,17 @@
-import { useEffect, useState, useRef } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { useNavigate, Link, redirect } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { LanguageContext } from "../../context/LanguageContext";
 import FileUploadSection from "./FileUploadSection";
 import Nav from "../Nav/Nav";
 import Login from "../Login/Login";
 import Loader from "../../assets/Loader";
 
 export default function Upload(){
+    
+    const {user, dispatch}=useContext(AuthContext)
+    const { t, changeLanguage } = useContext(LanguageContext);
 
-    const loginRef = useRef(null); // Create a ref for the login dialog
 
-    const {user, dispatch}=useAuthContext()
-   
     const [loading, setLoading]=useState(false)
     const loadingCss=loading===true?'opacity-50':''
 
@@ -155,31 +155,31 @@ export default function Upload(){
         <div className="flex max-w-screen grow flex-col overflow-x-hidden bg-repeat" style={{ backgroundImage: `url('/clouds.png')` }}>
 
             <Nav />
-            <div className={`h-full w-full flex flex-col justify-center items-center small:justify-start mb-20 ${loadingCss}`}>
+            <div className={`h-full w-full flex flex-col justify-center items-center small:justify-start ${loadingCss}`}>
                 
-                <div className={`flex flex-col relative large:max-w-[70vw] ${css} small:max-w-[80vw] large:relative`}>
+                <div className={`flex mt-10 flex-col relative large:max-w-[70vw] ${css} small:max-w-[80vw] large:relative`}>
                     
                     <div className="font-roboto text-[#02A44F] font-bold text-8xl small:text-3xl">
-                        AI Scanner
+                        {t('AI Scanner')}
                     </div>
                     {user && !showDownloadButton && 
                         <div className="w-full flex flex-col items-center">
                             <FileUploadSection previews={previews} handleFileUpload={handleFileUpload} errors={uploadErrors} formData={formData} />
                             
-                            <button onClick={handleSubmit} className="focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10">Upload</button> 
+                            <button onClick={handleSubmit} className="focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10">{t('Upload')}</button> 
                         </div>
                     }
 
-                    {pdfUrl && showDownloadButton && (
+                    {user && showDownloadButton && (
                         <div className="w-full flex flex-col items-center mt-10 mb-10">
                             <button className="flex justify-center focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10" onClick={() => window.open(pdfUrl, '_blank')}>
-                                View PDF
+                                {t('View PDF Report')}
                             </button>
                             <a href={pdfUrl} className="flex justify-center focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10" download="response.pdf">
-                                Download PDF
+                                {t('Download PDF Report')}
                             </a>
                             <button className="flex justify-center focus:outline-none rounded-md shadow-md z-20 large:mr-20 w-60 bg-[#0B3D23] p-2 text-white mt-10" onClick={handleRestartSession}>
-                                Restart Session / Upload More Images
+                                {t('Restart Session/Upload More Images')}
                             </button>
                         </div>
                     )}

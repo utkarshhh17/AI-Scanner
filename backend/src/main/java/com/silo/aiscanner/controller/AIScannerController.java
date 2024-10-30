@@ -34,7 +34,7 @@ public class AIScannerController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> upload(
-            @RequestParam(value = "side ") MultipartFile sideImg,
+            @RequestParam(value = "side") MultipartFile sideImg,
             @RequestParam(value = "front") MultipartFile frontImg,
             @RequestParam(value = "rear") MultipartFile rearImg,
             @RequestParam(value = "video", required = false) MultipartFile video,

@@ -1,5 +1,11 @@
+import { useContext } from "react";
 import { motion } from "framer-motion";
+import { LanguageContext } from "../../context/LanguageContext";
+
+
 export default function Register({loginInput, handleInputChange, handleRegister}){
+
+    const { t, changeLanguage } = useContext(LanguageContext);
 
     const slideRightIn = {
         initial: { x: 100, opacity: 0 },
@@ -9,15 +15,15 @@ export default function Register({loginInput, handleInputChange, handleRegister}
 
     return(
         <motion.div variants={slideRightIn} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="flex flex-col">
-            <div className="italic mt-2">Enter your Name</div>
+            <div className="italic mt-2">{t('Enter your Name')}</div>
             <input type="text" name="name" value={loginInput.name} onChange={handleInputChange} 
             className="large:min-w-[30vw] small:min-w-[60vw] focus:outline-none p-1 border-[0.05px] border-[#737775] rounded-sm"></input>
 
-            <div className="italic mt-2">Your Phone Number</div>
+            <div className="italic mt-2">{t('Your Phone Number')}</div>
             <input type="text" name="phoneNumber" value={loginInput.phoneNumber} onChange={handleInputChange} 
             className="large:min-w-[30vw] small:min-w-[60vw] focus:outline-none p-1 border-[0.05px] border-[#737775] rounded-sm"></input>
 
-            <div className="italic mt-2">Enter your City</div>
+            <div className="italic mt-2">{t('Enter your City')}</div>
             <input type="text" name="city" value={loginInput.city} onChange={handleInputChange} 
             className="large:min-w-[30vw] small:min-w-[60vw] focus:outline-none p-1 border-[0.05px] border-[#737775] rounded-sm"></input>
 
@@ -36,7 +42,7 @@ export default function Register({loginInput, handleInputChange, handleRegister}
                 <option value="kn">Kannada</option>
             </select>
 
-            <button onClick={handleRegister} className="py-2 mt-5 bg-[#02A44F] text-white rounded-lg shadow-lg z-40">Register</button>                    
+            <button onClick={handleRegister} className="py-2 mt-5 bg-[#0B3D23] text-white rounded-lg shadow-lg z-40">{t('Register')}</button>                    
 
             
         </motion.div>

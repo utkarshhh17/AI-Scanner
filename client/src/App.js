@@ -1,12 +1,15 @@
 // import { AnimatePresence } from "framer-motion";
-import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
-
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useEffect, useContext} from "react";
+import { LanguageContext } from "./context/LanguageContext";
 import HomePage from "./Pages/HomePage";
 import UploadPage from "./Pages/UploadPage";
-
+import LanguagePage from "./Pages/LanguagePage";
 
 function App() {
+
+
+
   useEffect(() => {
     function adjustFontSizeForBrowser() {
       const userAgent = navigator.userAgent;
@@ -23,7 +26,7 @@ function App() {
           document.documentElement.style.fontSize = '16px';
         } else {
           // Larger screen, Chrome browser
-          document.documentElement.style.fontSize = '13px';
+          document.documentElement.style.fontSize = '12px';
         }
       } else {
         if (screenWidth <= 641) {
@@ -32,7 +35,7 @@ function App() {
           document.documentElement.style.fontSize = '16px';
         } else {
           // Larger screen, Chrome browser
-          document.documentElement.style.fontSize = '13px';
+          document.documentElement.style.fontSize = '12px';
         }
       }
 
@@ -41,12 +44,16 @@ function App() {
 
     adjustFontSizeForBrowser();
   }, []);
+
+
   
   return (
       <Routes>
         <Route path="/" element={<HomePage />} >
         </Route>
         <Route path="/upload" element={<UploadPage />} >
+        </Route>
+        <Route path="/language" element={<LanguagePage />} >
         </Route>
 
      

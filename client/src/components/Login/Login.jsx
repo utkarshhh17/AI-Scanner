@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {motion, AnimatePresence} from "framer-motion";
 import axios from "axios";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import { LanguageContext } from "../../context/LanguageContext";
 import Otp from "./Otp";
 import Register from "./Register";
 export default function Login({loginRef}){
 
-    const {user, dispatch}=useAuthContext()
+    const {user, dispatch}=useContext(AuthContext)
+    const { t, changeLanguage } = useContext(LanguageContext);
 
     const [loginInput, setLoginInput]=useState({name:"",phoneNumber:"", city:"", lang:""})
     const [loginStage, setLoginStage]=useState("Login")
@@ -109,8 +111,8 @@ export default function Login({loginRef}){
     return(
     <div ref={loginRef} className="flex flex-col items-center bg-[#d1f4e2] large:min-w-[45vw] small:min-w-[80vw] font-roboto text-lg rounded-lg small:text-sm p-10 z-20">
         
-            <div className="text-3xl small:text-xl font-black"> Login</div>
-            <div>Login to enjoy all the services</div>
+            <div className="text-3xl small:text-xl font-black"> {t('Login')}</div>
+            <div>{t('Login to enjoy all the services')}</div>
             {/* <div> without any ads for free!</div> */}
             {error && 
                 <div className="text-red-500 mt-2">{error}</div>
@@ -120,11 +122,11 @@ export default function Login({loginRef}){
                 {loginStage==='Login' && 
                     <motion.div key="name-phone-form" variants={slideLeftOut} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="flex flex-col">
 
-                        <div className="italic mt-2">Enter your Phone Number</div>
+                        <div className="italic mt-2">{t('Enter your Phone Number')}</div>
                         <input type="text" name="phoneNumber" value={loginInput.phoneNumber} onChange={handleInputChange}
                         className="large:min-w-[30vw] small:min-w-[60vw] focus:outline-none p-1 border-[0.05px] border-[#737775] rounded-sm"></input>
                         
-                        <button onClick={handleLogin} className="py-2 mt-5 bg-[#02A44F] text-white rounded-lg shadow-lg z-40">Login</button>                    
+                        <button onClick={handleLogin} className="py-2 mt-5 bg-[#0B3D23] text-white rounded-lg shadow-lg z-40">{t('Login')}</button>                    
                     </motion.div>
                 }
 

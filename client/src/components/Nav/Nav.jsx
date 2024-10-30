@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { LanguageContext } from "../../context/LanguageContext";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import MenuIcon from "../../assets/MenuIcon";
 
@@ -10,7 +11,9 @@ import AboutUsIcon from "../../assets/AboutUsIcon";
 
 export default function Nav({setShowLogin}){
 
-    const {user, dispatch}=useAuthContext()
+    const {user, dispatch}=useContext(AuthContext)
+    const { t, changeLanguage } = useContext(LanguageContext);
+
 
     const [showMenu, setShowMenu]=useState(false)
     const [showUserOptions, setShowUserOptions]=useState(false)
@@ -37,11 +40,11 @@ export default function Nav({setShowLogin}){
     const location=useLocation();
 
     const navItems = [
-        { name: "Home", path: "/" },
-        { name: "Dairy Fortune", path: "/dairy-fortune" },
-        { name: "About Us", path: "/about" },
-        { name: "Blogs", path: "/blogs" },
-        { name: "Contact Us", path: "/contact" },
+        { name: t('Home'), path: "/" },
+        { name: t('Dairy Fortune'), path: "/dairy-fortune" },
+        { name: t('About Us'), path: "/about" },
+        { name: t('Blogs'), path: "/blogs" },
+        { name: t('Contact Us'), path: "/contact" },
     ];
 
 
@@ -74,7 +77,7 @@ export default function Nav({setShowLogin}){
                     <button onClick={toggleUser} className="ml-10 cursor-pointer"><UserIcon height="2.5rem" width="2.5rem" /></button>
                     {showUserOptions && !user && 
                             <div onClick={handleSignIn} className="cursor-pointer absolute ml-5 bg-gray-200 border-[1px] border-gray-400 p-2 top-20 ">
-                                Sign In
+                                {t('Login')}
                             </div>  
                     }
                     {showUserOptions && user && 
@@ -100,7 +103,7 @@ export default function Nav({setShowLogin}){
                             <div className="border-b-[0.2px] border-black py-2">Dairy Fortune</div>
                             <div className="flex justify-start items-center border-b-[0.2px] border-black py-2">
                                 <AboutUsIcon height="25" width="25" />
-                                <div className="ml-2">About Us</div>
+                                <div className="ml-2">{t('About Us')}</div>
                             </div>
                             <div className="border-b-[0.2px] border-black py-2">Blogs</div>
                             {user && 
