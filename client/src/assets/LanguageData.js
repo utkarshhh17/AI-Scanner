@@ -53,10 +53,6 @@ export const translations = {
         "Register": "पंजीकरण करें",
         "Enter the OTP": "ओटीपी दर्ज करें",
         "Verify": "सत्यापित करें",
-        "Front": "सामने",
-        "Rear": "पीछे",
-        "Side": "साइड",
-        "Rumination Video": "रुमिनेशन वीडियो",
         "Click to Upload": "अपलोड करने के लिए क्लिक करें",
         "Upload": "अपलोड",
 

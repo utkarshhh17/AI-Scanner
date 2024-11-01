@@ -12,7 +12,7 @@ export const LanguageProvider = ({ children }) => {
     
     // Load the language from localStorage on app load
     useEffect(() => {
-        const storedLanguage = localStorage.getItem('silo-fortune-gau-sampurna-ai-scanner-selected-language');
+        const storedLanguage = sessionStorage.getItem('silo-fortune-gau-sampurna-ai-scanner-selected-language');
         if (storedLanguage) {
             setLanguage(storedLanguage);
         }
@@ -23,7 +23,7 @@ export const LanguageProvider = ({ children }) => {
     
     const changeLanguage = (newLanguage) => {
       setLanguage(newLanguage);
-      localStorage.setItem('silo-fortune-gau-sampurna-ai-scanner-selected-language', newLanguage);
+      sessionStorage.setItem('silo-fortune-gau-sampurna-ai-scanner-selected-language', newLanguage);
     };
 
     console.log("Your language is set to: "+language)
