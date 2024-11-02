@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Cairo' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Animal Report</title>
+    <style>
+        @page {
+            margin-top:5rem;
+            margin-left:1rem;
+
+            margin-bottom: 0;
+          
+        }
+        @page:first{
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        header {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: -4rem;
+            height: 2rem;
+        }
+
+        footer {
+            z-index: 0;
+            position: fixed;
+            left: -1rem;
+            right: 0;
+            bottom: -0.1rem;
+
+            
+           
+        }
+
+
+        
+        body {
+            width: 100%;
+            font-family: 'Roboto', sans-serif;
+           
+            padding: 0;
+            line-height: 1;
+            /* background-color: #f2efef; */
+            color: #333;  
+          
+        }
+
+        .content{
+            width: 100%;
+        }
+
+        .logo-image-container{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+
+            margin:2rem 35%;
+        }
+
+        #logo-image{
+            top:1rem;
+            height: 4rem;
+            width: auto;
+
+            align-items: center;
+            margin-right: auto;
+        }
+
+        #qr-image{
+            
+            margin-left: 10rem;
+            height: 4rem;
+            
+        }
+
+        
+
+        .title{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+
+            color:#03A251;
+            font-family: 'Roboto';
+            font-weight: 900;
+            font-size:1.8rem;
+        }
+        
+
+
+        .heading{
+            font-size:1.4rem;
+            font-weight: 900;
+            font-family: 'Roboto';
+            color:#03A251;
+
+            margin-left: 2.2rem;
+
+            width: 100%;
+        }
+
+
+        .animal-details, .farmer-details, .economic-status{
+
+            width: 40rem;
+            margin: 0 auto;
+
+            border-spacing: 0 1rem;   
+            align-self: center;
+            font-family: 'Roboto';
+            font-weight:500;
+            font-size:1rem;
+        }
+
+        .animal-details th, .farmer-details th, .economic-status th{
+            background-color: #03A251;
+            border: 1px solid #03A251;
+            /* width: 15rem; */
+            min-height:1rem;
+            color:white;
+            
+            padding: 1rem;
+
+            
+        }
+
+        .animal-details td, .farmer-details td, .economic-status td{
+            background-color: rgb(197, 235, 197);
+            border: 1px solid #03A251;
+            /* width: 15rem; */
+            min-height:1rem;
+            font:black;
+            padding: 1rem;    
+        }
+
+
+
+        .general-health-table-container{
+            width: 100%;
+        }
+        .general-health-table{
+            width: 40rem;
+            margin: 0 auto;
+
+            height: auto;
+            border:1px solid #03A251;
+           
+            background-color: transparent;
+
+            font-family: 'Roboto';
+            font-weight:500;
+            font-size: 1rem;
+
+            margin-bottom: 7rem;
+
+            z-index: 5;
+
+        }
+        .gh{
+            color:white;  
+            background-color:#03A251;
+            padding-left: 0.5rem;
+            padding-top: 0.6rem; 
+            padding-bottom: 0.6rem;
+            font-weight: 800;
+        }
+        .stat{
+            min-height: 1.5rem;
+            margin-left: 0.5rem;
+            margin-top: 0.5rem;
+            display: flex;
+            
+            background-color:transparent;
+            color:#03A251;       
+
+        }
+
+
+        .in-re{
+            min-height: 5rem;
+            display: flex;
+            flex-direction: column;
+
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+
+            background-color:transparent;
+            color:#03A251;
+        }
+
+        #stat-content{
+            color:black;
+            margin-left:0.5rem ;
+
+            }
+
+        #in-re-content{
+            color:black;
+            margin-top:0.5rem;
+        }
+
+
+        .feed-fodder-table{
+            margin: 0 auto;
+
+
+            font-family: 'Roboto';
+            font-weight: 500;
+            border-spacing: 0 0;
+            border: 1px solid #03A251;
+            text-align: center;
+            font-size: 1rem;
+
+            width: 40rem;
+            margin-bottom: 10rem;
+           
+        }
+
+        .first-row{
+            background-color: #03A251;
+            color: white;
+            padding: 0.5rem;
+        }
+
+        .feed-fodder-table td{
+            color: black;
+            border: 1px solid  #03A251; 
+
+            padding: 0.5rem;
+        }
+
+
+
+        .bcs-table{
+            margin: 0 auto;
+
+
+            font-family: 'Roboto';
+            font-weight: 500;
+            border-spacing: 0 0;
+            border: 1px solid #03A251;
+            text-align: center;
+            font-size: large;
+
+            width: 40rem;    
+        }
+
+        .bcs-table-title{
+            border: 1px solid  #03A251; 
+            padding: 0.5rem;
+            background-color: #03A251;
+            color:white;
+
+            text-align: center;
+
+
+        }
+
+        .bcs-table-header{
+            border: 1px solid  #03A251; 
+            padding: 0.5rem;
+            color: #03A251;
+        }
+
+        .bcs-table td{
+            border: 1px solid  #03A251; 
+            padding: 0.5rem;
+            font-weight: 800;
+            color: black;
+        }
+
+
+        .watermark-logo{
+            position: absolute;
+            margin: 0 auto;
+        }
+        .cloud-watermark{
+            position: absolute;
+            margin: 0 auto;
+            z-index:-10;
+        }
+
+
+
+       
+    </style>
+</head>
+       
+<body>
+
+
+
+    <header>
+        <img src="./assets/header-image.png" alt="Logo" class="header-image">
+        <img src="./assets/logo-watermark1.png" style="top:25rem" class="watermark-logo">
+        <img src="./assets/cloud.png" style="top:5rem" class="cloud-watermark">
+    </header>
+
+    <footer>
+        <img src="./assets/footer.png" style="z-index: 0;" alt="Logo">
+        <div style="position: relative;bottom:0.16rem;width:50rem;background-color: #03A251; color:white; font-size:0.7rem; text-align: center;">
+            ಅಸ್ವೀಕರಣ: ಇದು AI ರಚಿತ ವರದಿಯಾಗಿದೆ. ತಜ್ಞರ ಸಲಹೆಗಾಗಿ ದಯವಿಟ್ಟು ಪಶು ವೈದ್ಯಕೀಯ ವೃತ್ತಿಪರರನ್ನು ಸಂಪರ್ಕಿಸಿ.
+        </div>
+       
+
+    </footer>
+
+    <div class="content">
+
+        
+
+    <div class="logo-image-container">
+        <img src="./assets/logo-image.png" id="logo-image">
+        <img src="./assets/qr-image.png" id="qr-image">
+    </div>
+
+
+  
+    <div class="title">
+        <div> ಹೈನುರಾಸುಗಳ ಸಾಮಾನ್ಯ ಆರೋಗ್ಯ ವರದ </div>
+
+        <div>& ತಾಂತ್ರಿಕ ಶಿಫಾರಸಗಳು </div>
+    </div>
+
+
+    <div class="heading" style="">ರೈತರ ವಿವರಗಳು</div>
+        <table class="farmer-details" style="margin-bottom: 6rem;">
+            <tr>
+                <th>ಹೆಸರು</th>
+                <td>{{ farmer_details['name'] }}</td>
+            </tr>
+            <tr>
+                <th> ಸ್ಥಳ</th>
+                <td>{{ farmer_details['place']}}</td>
+            </tr>
+            <tr>
+                <th> ದೂರವಾಣಿ ಸಂಖ</th>
+                <td>{{ farmer_details['phone_number'] }}</td>
+            </tr>
+        
+        </table>
+
+    <div class="heading" style="margin-bottom: 0">ಪ್ರಾಣಿಯ ವಿವರಗಳು</div>
+        <table class="animal-details" style="margin-bottom: 15rem;">
+            <tr>
+                <th>ಪ್ರಾಣಿಯ ವಿಧ</th>
+                <td>{{ animal_details['animal-type'] }}</td>
+            </tr>
+            <tr>
+                <th>ತಳಿಯ ವಿವರ</th>
+                <td>{{ animal_details['breed-grade']['breed-grade'] }}</td>
+            </tr>
+            <tr>
+                <th>ತಳಿಯ ಶುದ್ಧತೆಯ ಮಟ್ಟ</th>
+                <td>{{ animal_details['breed']['breed'] }}</td>
+            </tr>
+            <tr>
+                <th>ಪ್ರಾಣಿಯ ಅಂದಾಜು ದೇಹದ ತೂಕ (ಕಿಲೋ ಗ್ರಾಂಗಳಲ್ಲಿ)</th>
+                <td>{{ animal_details['body-weight'] }}</td>
+            </tr>
+        </table>
+    
+        
+    
+    <div class="heading" style="">ಪ್ರಾಣಿಗೆ ಸಂಬಂಧಿಸಿದ ಆರ್ಥಿಕ ಮಾಪದಂಡಗಳು</div>
+        <table class="economic-status" style="margin-bottom: 4rem;">
+            <tr>
+                <th> ದೇಹದ ಮೈಕಟ್ಟು ಸ್ಥಿತಿಯ ಅಂಕ BCS (1-5) </th>
+                <td>{{ animal_economic_status['bcs']['value'] }}</td>
+            </tr>
+            <tr>
+                <th>ಅಂದಾಜು ಹಾಲಿನ ಇಳುವರಿ (ಪೀಕ್ ಲ್ಯಾಕ್ಟೇಶನ್) (ಲೀಟರ್/ದಿನ)</th>
+                <td>{{ animal_economic_status['milk yield'] }}</td>
+            </tr>
+            <tr>
+                <th> ಗರಿಷ್ಠ ಹಾಲು ಉತ್ಪಾದನಾ ಸಾಮರ್ಥ್ಯ (ಲೀಟರ್/ದಿನ)</th>
+                <td>{{ animal_economic_status['production-capacity'] }}</td>
+            </tr>
+            <tr>
+                <th>ಹಾಲು ಉತ್ಪಾದನಾ ಇಳುವರಿ (ಲೀಟರ್‌ನಲ್ಲಿ)</th>
+                <td>{{ animal_economic_status['lactation-yield'] }}</td>
+            </tr>
+            <tr>
+                <th>ಬೆದೆ ಮತ್ತು ಗಭ್ಭದರಿಸುವ ಸಾಮರ್ಥ್ಯ</th>
+                <td>{{ animal_economic_status['breeding-capacity'] }}</td>
+            </tr>
+            <tr>
+                <th>ಮಾರುಕಟ್ಟೆ ಮೌಲ್ಯ (ರೂಪಾಯಿಗಳಲ್ಲಿ)</th>
+                <td>{{ animal_economic_status['market-value'] }}</td>
+            </tr>
+            <tr>
+                <th>ಖರೀದಿಯ ಶಿಫಾರಸುಗಳು</th>
+                <td>{{ animal_economic_status['buying-recommendation'] }}</td>
+            </tr>
+        </table>
+
+
+    
+        <div class="heading" style="margin-bottom: 0">ಪ್ರಾಣಿಗಳ ಸಾಮಾನ್ಯ ಆರೋಗ್ಯ ಸ್ಥಿತಿಗಳು</div>
+
+        <div class="general-health-table-container">
+            {% for condition, style in general_health_conditions_style.items() %}
+                <div class="general-health-table" id="{{ condition }}" style="{{ style }}">
+                    <div class="gh">{{ general_health_translations[condition] }}</div>    
+                    <div class="stat">
+                        <div style="font-weight: 800;">ಪ್ರಸಕ್ತ ಸ್ಥಿತಿ-</div>
+                        <div id="stat-content">
+                            {{ general_health_condition[condition]['value'] }}
+                        </div>
+                    </div>
+                    <div class="in-re">
+                        <div style="font-weight: 800;">ಸ್ಥಿತಿಗೆ ಸಂಬಂಧಿಸಿದ ವಿವರ</div>
+                        <div id="in-re-content">
+                            {{ general_health_condition[condition]['interpretation'] }}
+                        </div>
+                    </div>
+                    <div class="in-re">
+                        <div style="font-weight: 800;">ಸಲಹೆ ಮತ್ತು ಶಿಫಾರಸುಗಳು </div>
+                        <div id="in-re-content">
+                            {{ general_health_condition[condition]['recommendation'] }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+
+
+        <div class="heading" style="margin-bottom: 0">ಪೃಣಿಗಳ ಅಂಗಸಂಬಂದಿ ಖಾಯಿಲೆಗಳ ವಿವರ</div>
+            <div class="general-health-table-container">
+                {% for system, conditions in animal_disease_style.items() %}
+                    {% for condition, margin in conditions.items() %}
+                        <div class="general-health-table" id="{{ condition }}" style="margin-bottom: {{ margin }}; z-index: 1;">
+                            <div class="gh">{{ animal_disease_translations[condition] }}</div>
+                            <div class="stat">
+                                <div style="font-weight: 800;">ಪ್ರಸಕ್ತ ಸ್ಥಿತಿ-</div>
+                                <div id="stat-content">
+                                    {{ system_of_disorder[system][condition]['value'] }}
+                                </div>
+                            </div>
+                            <div class="in-re">
+                                <div style="font-weight: 800;">ಸ್ಥಿತಿಗೆ ಸಂಬಂಧಿಸಿದ ವಿವರ</div>
+                                <div id="in-re-content">
+                                    {{ system_of_disorder[system][condition]['interpretation'] }}
+                                </div>
+                            </div>
+                            <div class="in-re">
+                                <div style="font-weight: 800;">ಸಲಹೆ ಮತ್ತು ಶಿಫಾರಸುಗಳು</div>
+                                <div id="in-re-content">
+                                    {{ system_of_disorder[system][condition]['recommendation'] }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+
+            <table class="feed-fodder-table" style="margin-bottom: 40rem;">
+                <tr>
+                    <th class="first-row" style="width: 38%;">ಆಹಾರ/ ಮೇವು</th>
+                    <th class="first-row">ಮೆಕ್ಕೆಜೋಳ (ಸೈಲೆಜ್ ಆಧಾರಿತ) ಆಹಾರ ಪದ್ಧತಿ</th>
+                    <th class="first-row"></th>
+                    <th class="first-row">ಹಸಿರು ಮತ್ತು ಒಣ ಹುಲ್ಲು ಅಧಾರಿತ ಆಹಾರ ಪದ್ಧತಿ</th>
+                    <th class="first-row">ಕೆಜ/ದಿನದಲ್ಲಿ</th>
+
+                </tr>
+
+                {% for feed, quantities in diet.items() %}
+                    <tr>
+                        <td style="font-weight: 700;">{{ diet_data_translations[feed] }}</td>
+                        <td>{{ quantities[0] }}</td>
+                        {% if loop.index == 1 %}
+                            <td rowspan="{{ diet|length }}">OR</td>
+                        {% endif %}
+                        <td>{{ quantities[1] }}</td>
+                        <td style="font-size: 0.8rem;">kg/Day</td>
+                    </tr>
+                {% endfor %}
+            
+            </table>
+
+
+
+            <!-- BCS Table HardCoded -->
+
+            <table class="bcs-table" style="z-index: 1;">
+
+                <tr>
+    
+                    <th colspan="5" class="bcs-table-title">
+                        ಕರಾವಿನ ವಿವಿಧ ಹಂತಗಳಲ್ಲಿ BCS ನ ಶಿಫಾರಸುಗಳು
+                    </th>
+                </tr>
+    
+                <tr>
+                    <th rowspan="2" class="bcs-table-header" id="first-columns">ಮೆಟಾಬಾಲಿಕ್ ಹಂತಗಳು</th>
+    
+                    <th rowspan="2" class="bcs-table-header" id="first-columns">ಹಾಲು ಅನೀಡುತ್ತಿರುವ ದಿನಗಳು </th>
+    
+                    <th class="bcs-table-header" id="second-columns">ಬಿಸಿಎಸ</th>
+    
+                    <th class="bcs-table-header" id="second-columns">ಬಿಸಿಎಸ</th><th class="bcs-table-header" id="second-columns">ಬಿಸಿಎಸ</th></tr>
+    
+                <tr><th class="bcs-table-header">ಗುರಿ</th><th class="bcs-table-header">ಕನಿಷ್ಠ</th><th class="bcs-table-header">ಗರಿಷ್ಠ</th></tr>
+    
+                <tr><th class="bcs-table-header">ಕರು ಹಾಕಿದ ಪ್ರಾರಂಭಿಕ ದಿನಗಳು</th><td>0 to 10</td><td>3.5</td><td>3.25</td><td>3.75</td></tr>
+    
+                <tr><th class="bcs-table-header">ಕರಾವಿನ ಆರಂಭಿಕ ಹಂತ</th><td>11 to 100</td><td>2.75</td><td>2.5</td><td>3</td></tr>
+    
+                <tr><th class="bcs-table-header">ಕರಾವಿನ ಮಧ್ಯಮ ಹಂತ<ध्य/th><td>101 to 200</td><td>3</td><td>2.75</td><td>3.25</td></tr>
+    
+                <tr><th class="bcs-table-header">ಕರಾವಿನ ಅಂತಿಮ ಹಂತ </th><td>201 to 300</td><td>3.25</td><td>3</td><td>3.75 </td></tr>
+    
+                <tr><th class="bcs-table-header">ಒಣ ಹಂತ (Dry off)</th><td>>300</td><td>3.5</td><td>3.25</td><td>3.75 </td></tr>
+
+                <tr><th class="bcs-table-header">ಒಣ ಹಸು (Dry Cow)</th><td>-60 to -1</td><td>3.50</td><td>3.25</td> <td>3.75</td></tr>
+    
+            </table>
+
+        
+
+        </div>
+
+        
+        
+
+</body>
+</html>

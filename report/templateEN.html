@@ -245,6 +245,7 @@
         .bcs-table{
             margin: 0 auto;
 
+
             font-family: 'Roboto';
             font-weight: 500;
             border-spacing: 0 0;
@@ -279,6 +280,7 @@
             color: black;
         }
 
+
         .watermark-logo{
             position: absolute;
             margin: 0 auto;
@@ -290,6 +292,7 @@
         }
 
 
+
        
     </style>
 </head>
@@ -297,25 +300,29 @@
 <body>
 
 
+
     <header>
-        <img src="assets/header-image.png" alt="Logo" class="header-image">
+        <img src="./assets/header-image.png" alt="Logo" class="header-image">
         <img src="./assets/logo-watermark1.png" style="top:25rem" class="watermark-logo">
         <img src="./assets/cloud.png" style="top:5rem" class="cloud-watermark">
-
     </header>
 
     <footer>
-        <img src="assets/footer.png" style="z-index: 0;" alt="Logo">
+        <img src="./assets/footer.png" style="z-index: 0;" alt="Logo">
         <div style="position: relative;bottom:0.16rem;width:50rem;background-color: #03A251; color:white; font-size:0.7rem; text-align: center;">
             Disclaimer:This is an AI-generated report. Please consult a veterinary professional for expert advice
         </div>
+       
+
     </footer>
 
     <div class="content">
 
+        
+
     <div class="logo-image-container">
-        <img src="assets/logo-image.png" id="logo-image">
-        <img src="assets/qr-image.png" id="qr-image">
+        <img src="./assets/logo-image.png" id="logo-image">
+        <img src="./assets/qr-image.png" id="qr-image">
     </div>
 
 
@@ -331,15 +338,15 @@
         <table class="farmer-details" style="margin-bottom: 6rem;">
             <tr>
                 <th>Name</th>
-                <td>{{ name }}</td>
+                <td>{{ farmer_details['name'] }}</td>
             </tr>
             <tr>
                 <th>Place</th>
-                <td>{{ location }}</td>
+                <td>{{ farmer_details['place']}}</td>
             </tr>
             <tr>
                 <th>Phone Number</th>
-                <td>{{ phoneNumber }}</td>
+                <td>{{ farmer_details['phone_number'] }}</td>
             </tr>
         
         </table>
@@ -403,7 +410,7 @@
         <div class="heading" style="margin-bottom: 0">GENERAL HEALTH CONDITIONS OF ANIMALS</div>
 
         <div class="general-health-table-container">
-            {% for condition, style in general_health_conditions.items() %}
+            {% for condition, style in general_health_conditions_style.items() %}
                 <div class="general-health-table" id="{{ condition }}" style="{{ style }}">
                     <div class="gh">{{ condition | replace('-', ' ') | title }}</div>    
                     <div class="stat">
@@ -432,7 +439,7 @@
 
         <div class="heading" style="margin-bottom: 0">ANIMAL DISEASE STATUS</div>
             <div class="general-health-table-container">
-                {% for system, conditions in animal_disease.items() %}
+                {% for system, conditions in animal_disease_style.items() %}
                     {% for condition, margin in conditions.items() %}
                         <div class="general-health-table" id="{{ condition }}" style="margin-bottom: {{ margin }}; z-index: 1;">
                             <div class="gh">{{ system | replace('-', ' ') | title }} - {{ condition | replace('-', ' ') | title }}</div>
@@ -460,11 +467,13 @@
             </div>
 
 
-            <table class="feed-fodder-table" style="margin-bottom: 20rem;">
+            <table class="feed-fodder-table" style="margin-bottom: 40rem;">
                 <tr>
                     <th class="first-row" style="width: 38%;">Feed/Fodder</th>
-                    <th class="first-row">Maize silage based diet (in kg/Day)</th>
-                    <th class="first-row">Green & Dry fodder based Diet (in kg/Day)</th>
+                    <th class="first-row">Maize silage based diet</th>
+                    <th class="first-row"></th>
+                    <th class="first-row">Green & Dry fodder based Diet</th>
+                    <th class="first-row">Unit of Measure</th>
 
                 </tr>
 
@@ -472,7 +481,11 @@
                     <tr>
                         <td>{{ feed }}</td>
                         <td>{{ quantities[0] }}</td>
+                        {% if loop.index == 1 %}
+                            <td rowspan="{{ diet|length }}">OR</td>
+                        {% endif %}
                         <td>{{ quantities[1] }}</td>
+                        <td style="font-size: 0.8rem;">kg/Day</td>
                     </tr>
                 {% endfor %}
             
