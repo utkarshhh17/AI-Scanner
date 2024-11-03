@@ -29,7 +29,7 @@ async def create_report(request: Request):
         "udder-mammary-system":{"mastitis": "15rem"},
         "skin-Sensory-organs":{"flea-bite": "3rem"},
         "metabolic-system":{"milk-fever": "4rem"},
-        "viral-diseases":{"lsd": "10rem"}
+        "viral-diseases":{"lsd": "20rem"}
     }
 
     diet_data = {
