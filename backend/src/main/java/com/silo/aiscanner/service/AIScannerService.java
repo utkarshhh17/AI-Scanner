@@ -16,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
@@ -88,6 +89,9 @@ public class AIScannerService {
         // response is getting within 5 seconds
         String response = new String(restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class).getBody().getBytes(Charset.forName("UTF-8")));
 
+        System.out.println("Response recieved: "+ response);
+
+
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonResponse = objectMapper.readTree(response);
 
@@ -129,13 +133,16 @@ public class AIScannerService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Or handle as needed
         }
 
+
         HttpHeaders pdfHeaders = new HttpHeaders();
         pdfHeaders.setContentType(MediaType.APPLICATION_PDF);
         pdfHeaders.setContentDispositionFormData("attachment", "response.pdf");
         pdfHeaders.setContentLength(pdfBytes.length);
 
 
-        saveToModelGeneratedData(null, a, json);
+
+
+        //saveToModelGeneratedData(null, a, json);
 
         return new ResponseEntity<>(pdfBytes, pdfHeaders, HttpStatus.OK);
     }

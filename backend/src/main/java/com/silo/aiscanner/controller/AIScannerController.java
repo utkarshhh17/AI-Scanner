@@ -1,28 +1,41 @@
 package com.silo.aiscanner.controller;
 
+import com.silo.aiscanner.dto.modeldata.ModelData;
 import com.silo.aiscanner.entity.MediaDetails;
 import com.silo.aiscanner.entity.User;
 import com.silo.aiscanner.repository.MediaDetailsRepository;
 import com.silo.aiscanner.repository.UserRepository;
+import com.silo.aiscanner.service.AIScannerAsyncService;
 import com.silo.aiscanner.service.AIScannerService;
+import com.silo.aiscanner.service.AsyncMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Enable CORS for all requests to this API endpoint
+@CrossOrigin(origins = "*")
 public class AIScannerController {
 
     @Autowired
     private AIScannerService aiScannerService;
     @Autowired
+    private AIScannerAsyncService aiScannerAsyncService;
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AsyncMethods asyncMethods;
 
     @Autowired
     private MediaDetailsRepository mediaDetailsRepository;
@@ -91,6 +104,20 @@ public class AIScannerController {
         return responseEntity;
 
 
+
+    }
+
+
+    @PostMapping("/upload/async")
+    public ResponseEntity<?> uploadAsync(
+            @RequestParam(value = "side-img") MultipartFile sideImg,
+            @RequestParam(value = "front-img") MultipartFile frontImg,
+            @RequestParam(value = "rear-img") MultipartFile rearImg,
+            @RequestParam(value = "video", required = false) MultipartFile video) throws IOException, ExecutionException, InterruptedException {
+
+
+
+        return new ResponseEntity<>(aiScannerAsyncService.uploadAsyncImages(sideImg,frontImg,rearImg,video).get(), HttpStatus.OK);
 
     }
 }
