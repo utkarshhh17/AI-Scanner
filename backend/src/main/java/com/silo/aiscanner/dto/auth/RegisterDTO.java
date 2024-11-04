@@ -1,40 +1,22 @@
 package com.silo.aiscanner.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RegisterDTO {
+    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
+
+    @JsonProperty(value = "name")
     private String name;
+
+    @JsonProperty(value = "lang")
     private String lang;
+
+    @JsonProperty(value = "city")
     private String place;
 
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
 }

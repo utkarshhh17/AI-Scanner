@@ -9,7 +9,7 @@ import Loader from "../../assets/Loader";
 export default function Upload(){
     
     const {user, dispatch}=useContext(AuthContext)
-    const { t, changeLanguage, langauge } = useContext(LanguageContext);
+    const { t, changeLanguage, language } = useContext(LanguageContext);
 
 
     const [loading, setLoading]=useState(false)
@@ -94,7 +94,8 @@ export default function Upload(){
                 dataToSend.append(key, formData[key]);
             }
         }
-        dataToSend.append("lang",langauge)
+        dataToSend.append("lang",language)
+        console.log(language)
 
         setLoading(true)
 

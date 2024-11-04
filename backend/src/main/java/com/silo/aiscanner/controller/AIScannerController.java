@@ -51,7 +51,8 @@ public class AIScannerController {
             @RequestParam(value = "front") MultipartFile frontImg,
             @RequestParam(value = "rear") MultipartFile rearImg,
             @RequestParam(value = "video", required = false) MultipartFile video,
-            @RequestHeader("Session-ID") String sessionId) throws IOException {
+            @RequestHeader("Session-ID") String sessionId,
+            @RequestParam("lang") String lang) throws IOException {
 
         String videoName = null;
 
@@ -73,8 +74,6 @@ public class AIScannerController {
 //        mediaFilesName.setFrontImageName(frontImg.getOriginalFilename());
 //        mediaFilesName.setRearImageName(rearImg.getOriginalFilename());
 
-
-
         MediaDetails mediaDetails = new MediaDetails();
         mediaDetails.setUserId(user.getUserId());
         mediaDetails.setVideoFile(videoName);
@@ -86,14 +85,11 @@ public class AIScannerController {
         MediaDetails a = mediaDetailsRepository.save(mediaDetails);
 
 
-
-
-//
         if(user==null){
             return new ResponseEntity<>("Session ID is wrong", HttpStatus.BAD_REQUEST);
         }
 
-        ResponseEntity<byte[]> responseEntity = aiScannerService.uploadCattleImages(sideImg, frontImg, rearImg, video, user, a);
+        ResponseEntity<byte[]> responseEntity = aiScannerService.uploadCattleImages(sideImg, frontImg, rearImg, video, lang, user, a);
 
         if (responseEntity.getBody() != null) {
             System.out.println("PDF received with length: " + responseEntity.getBody().length);

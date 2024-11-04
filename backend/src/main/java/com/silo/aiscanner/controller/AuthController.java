@@ -83,10 +83,10 @@ public class AuthController {
 
         // if number does not exist, create a new user
         // then prompt the user to the otp page
+
         user = new User();
         user.setName(registerDTO.getName());
         user.setPhoneNumber(registerDTO.getPhoneNumber());
-        user.setLang(registerDTO.getLang());
         user.setCity(registerDTO.getPlace());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());

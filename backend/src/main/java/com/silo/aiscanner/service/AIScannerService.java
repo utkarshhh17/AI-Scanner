@@ -2,7 +2,8 @@ package com.silo.aiscanner.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.silo.aiscanner.dto.CattleUploadResponse;
+import com.silo.aiscanner.dto.pdfdata.CattleUploadResponse;
+import com.silo.aiscanner.dto.pdfdata.FarmerDetails;
 import com.silo.aiscanner.entity.MediaDetails;
 import com.silo.aiscanner.entity.ModelGeneratedData;
 import com.silo.aiscanner.entity.User;
@@ -16,7 +17,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 public class AIScannerService {
 
     private final RestTemplate restTemplate;
+
+
     @Autowired
     private ModelGeneratedDataRepository modelGeneratedDataRepository;
 
@@ -46,6 +48,7 @@ public class AIScannerService {
 
     public ResponseEntity<byte[]> uploadCattleImages(MultipartFile sideImg, MultipartFile frontImg,
                                                      MultipartFile rearImg, MultipartFile video,
+                                                     String lang,
                                                      User user, MediaDetails a) throws IOException {
 
         String url = "https://scanner.silofortune.com/api/v2/cattle-scanner";
@@ -82,7 +85,7 @@ public class AIScannerService {
                 }
             });
         }
-        body.add("language", user.getLang());
+        body.add("language", lang);
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
@@ -96,9 +99,8 @@ public class AIScannerService {
         JsonNode jsonResponse = objectMapper.readTree(response);
 
         CattleUploadResponse uploadResponse = new CattleUploadResponse();
-        uploadResponse.setName(user.getName());
-        uploadResponse.setPhone(user.getPhoneNumber());
-        uploadResponse.setCity(user.getCity());
+        uploadResponse.setFarmerDetails(new FarmerDetails(user.getName(), user.getPhoneNumber(), user.getCity()));
+        uploadResponse.setLang(lang);
         uploadResponse.setOriginalResponse(jsonResponse);
 
         return sendJsonToApiAndGetPdf(uploadResponse, a);
